@@ -1,0 +1,83 @@
+# Parcours de tous les écrans et boîtes de dialogue. Lancé par make check,
+# il échoue si un texte sort de l'écran. Syntaxe : sim/README.md
+SEED:4
+DELAY:100
+
+# Partie en cours au niveau Difficile, puis pause.
+EXE DOWN DOWN EXE          # Nouvelle partie > Difficile
+EXE WAIT:20                # premier coup
+F1 RIGHT F1 LEFT F1        # drapeaux posés et retirés
+EXIT                       # pause
+DOWN DOWN EXE              # Aide depuis la pause
+RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT LEFT RIGHT
+EXE                        # EXE sur la dernière page : retour à la pause
+DOWN EXE                   # Menu principal (la partie est gardée)
+
+# Menu principal avec « Reprendre la partie ».
+DOWN EXE                   # Nouvelle partie
+EXE                        # Facile : il faut abandonner la partie en cours
+EXE                        # « Non » est présélectionné
+EXIT                       # retour au menu
+EXE                        # Reprendre la partie
+MENU                       # menu Casio (sauvegarde), puis retour au jeu
+WAIT:5
+EXIT DOWN EXE              # pause > Recommencer
+UP EXE                     # « Oui, abandonner »
+EXIT DOWN DOWN DOWN EXE    # pause > Menu principal
+
+# Statistiques : tous les niveaux, effacement refusé puis accepté.
+DOWN EXE
+RIGHT RIGHT RIGHT LEFT
+F6 EXE
+F6 UP EXE
+EXIT
+
+# Deux victoires identiques au niveau Facile : la seconde n'est pas un record.
+EXE UP UP EXE              # Nouvelle partie > Facile
+EXE
+RIGHT UP UP F1
+RIGHT EXE
+RIGHT EXE
+RIGHT RIGHT DOWN DOWN DOWN F1
+RIGHT F1
+LEFT LEFT UP UP F1
+RIGHT RIGHT RIGHT RIGHT DOWN DOWN DOWN F1
+DOWN EXE
+LEFT UP EXE
+DOWN EXE
+RIGHT RIGHT RIGHT DOWN EXE
+RIGHT F1
+RIGHT F1
+RIGHT DOWN EXE
+RIGHT RIGHT UP UP UP EXE
+LEFT EXE
+DOWN EXE
+WAIT:12
+EXE                        # Rejouer
+EXE
+RIGHT UP UP F1
+RIGHT EXE
+RIGHT EXE
+RIGHT RIGHT DOWN DOWN DOWN F1
+RIGHT F1
+LEFT LEFT UP UP F1
+RIGHT RIGHT RIGHT RIGHT DOWN DOWN DOWN F1
+DOWN EXE
+LEFT UP EXE
+DOWN EXE
+RIGHT RIGHT RIGHT DOWN EXE
+RIGHT F1
+RIGHT F1
+RIGHT DOWN EXE
+RIGHT RIGHT UP UP UP EXE
+LEFT EXE
+DOWN EXE
+WAIT:12
+DOWN EXE                   # Voir la grille
+EXE
+DOWN EXE                   # Menu principal
+
+# Aide depuis le menu principal, puis Quitter.
+DOWN DOWN EXE
+EXIT
+UP EXE

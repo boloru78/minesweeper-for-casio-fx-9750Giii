@@ -1,0 +1,82 @@
+# Captures d'écran et animation du README : make screenshots
+# Syntaxe des scripts : sim/README.md
+SEED:15
+DELAY:150
+
+SHOT:menu
+EXE                        # Nouvelle partie
+DOWN                       # niveau Moyen
+SHOT:levels
+EXE
+WAIT:4
+
+# Partie résolue sans deviner (touches générées par un petit solveur).
+REC:on
+EXE
+LEFT LEFT LEFT F1
+RIGHT F1
+LEFT LEFT LEFT LEFT DOWN F1
+RIGHT RIGHT RIGHT RIGHT UP UP EXE
+LEFT LEFT LEFT LEFT DOWN EXE
+RIGHT EXE
+RIGHT EXE
+LEFT LEFT UP EXE
+RIGHT RIGHT F1
+RIGHT EXE
+LEFT UP F1
+RIGHT EXE
+RIGHT EXE
+RIGHT F1
+RIGHT F1
+RIGHT EXE
+RIGHT F1
+DOWN F1
+DOWN F1
+DOWN EXE
+DOWN EXE
+WAIT:3
+SHOT:game
+RIGHT UP UP EXE
+DOWN EXE
+DOWN EXE
+RIGHT UP UP EXE
+LEFT LEFT DOWN DOWN DOWN F1
+RIGHT DOWN F1
+LEFT LEFT LEFT EXE
+RIGHT EXE
+RIGHT EXE
+LEFT LEFT LEFT EXE
+LEFT F1
+LEFT LEFT EXE
+RIGHT EXE
+LEFT LEFT F1
+LEFT EXE
+WAIT:12                    # grille finale, puis bilan
+SHOT:won
+WAIT:15
+REC:off
+
+DOWN DOWN EXE              # Menu principal
+DOWN EXE                   # Statistiques (niveau Moyen)
+SHOT:stats
+EXIT
+DOWN DOWN EXE              # Aide
+RIGHT                      # page des commandes
+SHOT:help
+EXIT
+
+# Partie perdue au niveau Difficile, avec un drapeau juste et un faux.
+EXE DOWN EXE
+EXE                        # premier coup
+WAIT:30
+RIGHT RIGHT RIGHT DOWN F1  # drapeau sur une mine
+UP UP F1                   # drapeau sur une case sans mine
+DOWN
+EXIT
+SHOT:pause
+EXIT
+EXE                        # boum
+WAIT:12
+SHOT:lost
+DOWN EXE                   # Voir la grille
+SHOT:lost_board
