@@ -95,6 +95,32 @@ nécessaire, sur macOS comme sur Windows ou Linux.
    d'éjection à côté du disque dans le Finder). La calculatrice termine alors
    l'enregistrement du fichier ; attendez qu'elle revienne au menu.
 
+### Place nécessaire
+
+Le jeu occupe environ **43 Ko**, et sa sauvegarde `MINES.sav` moins de
+200 octets. Les deux vont dans la **mémoire de stockage** (3 Mo), pas dans la
+mémoire principale de 61 Ko où vivent les programmes Basic : installer le jeu
+ne prend aucune place à vos programmes.
+
+Si la mémoire de stockage est pleine, l'application **MEMORY** de la
+calculatrice montre ce qui l'occupe et permet de supprimer des fichiers, puis
+d'optimiser la mémoire pour récupérer la place libérée.
+
+**Sur macOS**, le Finder ajoute des fichiers cachés sur la calculatrice : une
+copie `._Mines.g1a` de quelques Ko, et les fichiers mis à la corbeille restent
+sur la calculatrice tant que la corbeille n'est pas vidée. Pour l'éviter,
+copiez le jeu depuis le Terminal (remplacez `CALCULATRICE` par le nom du
+disque, affiché par `ls /Volumes`) :
+
+```sh
+cp -X ~/Downloads/Mines.g1a /Volumes/CALCULATRICE/   # copie sans fichier caché
+dot_clean -m /Volumes/CALCULATRICE                   # supprime les ._ déjà créés
+```
+
+Pour supprimer un fichier de la calculatrice dans le Finder, utilisez
+<kbd>⌥ Option</kbd> + <kbd>⌘ Cmd</kbd> + <kbd>⌫</kbd> (suppression immédiate,
+sans passer par la corbeille).
+
 ### 3. Lancer le jeu
 
 Appuyez sur <kbd>MENU</kbd> : une nouvelle icône **MINES** apparaît dans le
@@ -324,6 +350,10 @@ SANITIZE=` les désactive.
    La CI crée la release et y joint `Mines.g1a`.
 
 ## Questions fréquentes
+
+**Le jeu prend-il beaucoup de place ?** Environ 43 Ko sur les 3 Mo de la
+mémoire de stockage, et rien dans la mémoire des programmes Basic. Voir
+[Place nécessaire](#place-nécessaire).
 
 **L'icône n'apparaît pas dans le menu.** Vérifiez que `Mines.g1a` est à la
 racine de la mémoire de stockage (pas dans un dossier) et que le disque a
