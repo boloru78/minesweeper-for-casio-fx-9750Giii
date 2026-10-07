@@ -277,6 +277,7 @@ fxsdk build-fx      # produit Mines.g1a
 ├── tools/               gen_assets.py (ressources), pbm_to_png.py (captures)
 ├── docs/images/         Captures d'écran du README (générées)
 ├── .github/             CI (compilation, tests, releases) et modèles d'issues
+├── CLAUDE.md            Notes de suivi pour Claude Code (état, choix, prochaines étapes)
 ├── CMakeLists.txt       Compilation de l'add-in avec le fxSDK
 └── Makefile             Outils de développement sur PC
 ```
