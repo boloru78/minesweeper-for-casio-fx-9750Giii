@@ -15,11 +15,13 @@ l'installation et l'organisation du code.
 
 ## L'auteur et ses préférences
 
-- Auteur : **boloru78**, sur **macOS**, avec l'application Claude Desktop.
+- Auteur : **boloru78**, sur **macOS** (Mac Intel), avec l'application Claude
+  Desktop.
 - But : jouer, et montrer le projet (portfolio, communauté Planète Casio et
   Cemetech). Le dépôt est **public**, sous **licence MIT**.
 - **Tout est en français** : README, commentaires, textes du jeu, messages de
-  commit. Les identifiants du code restent en anglais.
+  commit, et les réponses de Claude. Les identifiants du code restent en
+  anglais.
 - Claude écrit le code ; l'auteur teste sur sa calculatrice et fait ses
   retours. Il débute avec Git et le Terminal : expliquer les commandes pas à
   pas.
@@ -61,12 +63,27 @@ make screenshots    # régénère docs/images/ (après tout changement visuel)
 make assets         # après une modification de assets/*.txt
 ```
 
-Compiler l'add-in sur le Mac de l'auteur (Docker Desktop requis) :
+Compiler l'add-in (Docker Desktop requis, **pas installé** sur le Mac de
+l'auteur pour l'instant : c'est la CI qui compile) :
 
 ```sh
 docker run --rm -v "$PWD":/src -w /src manawyrm/fxsdk:0.0.3 \
     bash -c 'PATH=/root/.local/bin:$PATH fxsdk build-fx'
 ```
+
+`gh` (GitHub CLI) est installé et connecté au compte boloru78. Pour
+récupérer l'add-in de la dernière exécution réussie de la CI :
+
+```sh
+gh run download "$(gh run list --branch main --status success --limit 1 \
+    --json databaseId --jq '.[0].databaseId')" --name Mines-g1a
+```
+
+Pillow est installé dans un environnement Python à côté du dépôt : ajouter
+`PYTHON=../.venv/bin/python` aux commandes `make` qui en ont besoin. Les
+commits sont signés avec l'adresse anonyme de GitHub
+(`169409751+boloru78@users.noreply.github.com`, réglée dans ce dépôt) : le
+compte refuse les envois qui exposent l'adresse e-mail personnelle.
 
 La CI (`.github/workflows/build.yml`) fait tout cela sur chaque push et chaque
 Pull Request. Elle publie `Mines.g1a` comme artefact, et crée une release pour
@@ -88,19 +105,25 @@ chaque tag `v*`.
 ## Transférer le jeu sur la calculatrice (macOS)
 
 La calculatrice se branche en USB et se met en mode **USB Flash** (F1). Elle
-apparaît alors dans `/Volumes/`. Le Finder ajoute des fichiers cachés (`._*`,
-`.fseventsd`…), qui prennent de la place inutilement. Il vaut mieux copier
-depuis le Terminal :
+apparaît alors dans `/Volumes/NO NAME`. Le Finder ajoute des fichiers cachés
+(`._*`, `.fseventsd`…), qui prennent de la place inutilement. Il vaut mieux
+copier depuis le Terminal :
 
 ```sh
 ls /Volumes                                  # nom du disque de la calculatrice
-cp -X Mines.g1a "/Volumes/NOM/"              # copie sans fichier caché
-dot_clean -m "/Volumes/NOM"                  # supprime les ._ éventuels
+cp -X Mines.g1a "/Volumes/NO NAME/"          # copie sans fichier caché
+dot_clean -m "/Volumes/NO NAME"              # supprime les ._ éventuels
+rm -rf "/Volumes/NO NAME/.fseventsd"         # juste avant d'éjecter
+diskutil eject "/Volumes/NO NAME"
 ```
 
-Éjecter ensuite le disque avant de débrancher. Le jeu occupe environ 43 Ko de
-la mémoire de stockage (3 Mo) ; les programmes Basic sont dans la mémoire
-principale (61 Ko) et n'apparaissent pas sur le disque USB.
+Le jeu occupe environ 43 Ko de la mémoire de stockage (3 Mo).
+
+**Attention :** sur la fx-9750GIII, le dossier **`@MainMem`** du disque USB
+est la **mémoire principale** de la calculatrice : programmes Basic, listes,
+matrices, images, réglages. Supprimer un fichier de ce dossier le supprime
+de la calculatrice. Ne jamais y toucher. `EACTWORK.tmp` est un fichier de
+travail du système, à laisser.
 
 ## Historique
 
@@ -111,30 +134,32 @@ principale (61 Ko) et n'apparaissent pas sur le disque USB.
 - **07/10/2026** : installation de l'application GitHub Claude sur le dépôt,
   push de la branche `claude/casio-minesweeper-project-h4751y`, ouverture de la
   [Pull Request #1](https://github.com/boloru78/minesweeper-for-casio-fx-9750Giii/pull/1).
-  CI verte : tests et compilation de l'add-in.
+  CI verte : tests et compilation de l'add-in. La PR a ensuite été fusionnée
+  dans `main` depuis GitHub.
+- **07/10/2026 (2e session, sur le Mac)** : installation de `gh`, dépôt cloné
+  dans `~/Documents/jeux calculatrice/`. Ménage de la calculatrice : sauvegarde
+  complète sur le Mac (`sauvegarde-calculatrice-2026-10-06`), puis
+  suppression, avec l'accord de l'auteur, de `u.py`, `TEST.g2e`, `SAVE-F/`
+  et `System Volume Information`. Geometry Dash (`Geometry.g1a`, `GDash.sav`)
+  et `@MainMem` gardés. `Mines.g1a` de la CI copié sur la calculatrice.
+  Création du projet frère
+  [Tetris](https://github.com/boloru78/tetris-for-casio-fx-9750Giii) et de la
+  [page de profil](https://github.com/boloru78/boloru78).
 
 ## État actuel (07/10/2026)
 
-- La PR #1 est ouverte et verte, mais **pas encore fusionnée** dans `main`.
-- Le jeu **n'a pas encore été testé sur la vraie calculatrice**.
+- La PR #1 est fusionnée dans `main`. La branche
+  `claude/casio-minesweeper-project-h4751y` n'est plus utile.
+- `Mines.g1a` (CI de `main`) est sur la calculatrice, mais **les tests sur la
+  vraie calculatrice n'ont pas encore été faits**.
 
 ## Prochaines étapes
 
-1. **Ménage de la calculatrice**, demandé par l'auteur. Lister les fichiers de
-   la mémoire de stockage, puis tout supprimer **sauf Geometry Dash et ses
-   fichiers de sauvegarde**, en demandant confirmation avant chaque
-   suppression. Les applications intégrées et les programmes Basic ne sont pas
-   sur le disque USB : ils ne risquent rien. Supprimer aussi les fichiers
-   cachés de macOS.
-2. **Copier `Mines.g1a`** sur la calculatrice (voir plus haut). Le fichier est
-   dans l'artefact `Mines-g1a` de la dernière exécution de la CI, ou dans le
-   dossier Téléchargements de l'auteur.
-3. **Tester sur la calculatrice**, en priorité :
+1. **Tester sur la calculatrice**, en priorité :
    - la sauvegarde : MENU, ouvrir une autre application, puis relancer le jeu
      (la partie doit reprendre) ;
    - SHIFT puis AC/ON (extinction sans découvrir de case) ;
    - le chronomètre et la répétition des flèches maintenues ;
    - l'affichage de l'icône « MINES » dans le menu.
-4. **Fusionner la PR #1**, puis créer le tag `v1.0.0` pour publier la première
-   release.
-5. Idées pour la suite : voir la section du même nom dans le README.
+2. Si tout va bien, créer le tag `v1.0.0` pour publier la première release.
+3. Idées pour la suite : voir la section du même nom dans le README.
